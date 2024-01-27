@@ -1,0 +1,124 @@
+/* Table of Contents Styles */
+.aio-toc {
+    background-color: #fffcfc; /* Dark background */
+    color: #fff; /* Light text for visibility */
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.aio-toc h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-left: 30px;
+    color: rgb(0, 0, 0); /* Slightly lighter color for the heading */
+}
+
+.aio-toc ul {
+    list-style: none;
+    margin-left: 40px;
+    padding: 0;
+}
+
+.aio-toc ul li {
+    margin-bottom: 0px; /* Reduce the bottom margin to decrease spacing */
+    padding: 2px 0; /* Optionally adjust padding for finer control */
+    line-height: 1.2 !important;
+}
+
+.aio-toc ul ul {
+    margin-top: 0px;
+    margin-left: 15px; /* Indent for nested lists */
+    margin-bottom: 5px;
+
+}
+
+.aio-toc ul ul li {
+    margin-bottom: 0px; /* You can adjust this for nested list items */
+    line-height: 1.2 !important;
+}
+
+.aio-toc a {
+    color: #81439c; /* Color for links */
+    text-decoration: none;
+    border-bottom: 1px dashed #d60000 !important;
+    font-size: 14px;
+    line-height: 1.2; /* Adjust line height for spacing between lines */
+}
+
+.aio-toc a:hover {
+    text-decoration: none; /* Style for hover state */
+    border-bottom: 2px solid #d60000 !important;
+    color: #81439c !important; /* Color for links */
+}
+
+/* Collapsed and Expanded State Styles */
+.aio-toc.collapsed ul {
+    display: none;
+}
+
+.aio-toc.expanded ul {
+    display: block;
+    margin-left: 30px;
+}
+
+/* Toggle Button Style */
+.aio-toc .aio-toc-toggle {
+    display: flex;
+    margin-left: auto;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Author Bio Box Styles */
+#author-bio {
+    margin-top: 35px;
+    margin-bottom: 5px;
+    padding: 20px !important;
+    border: 2px dashed #e2e0e0 !important;
+    background: #fffcfc !important;
+    display: inline-block;
+}
+
+#author-avatar {
+    float: left;
+    margin-right: 15px;
+}
+
+#author-avatar img {
+    border-radius: 50%;
+}
+
+#author-details {
+    overflow: hidden;
+}
+
+#author-details h4 {
+    margin-top: 0;
+    margin-bottom: 10px !important;
+    color: #000;
+}
+
+#author-details p {
+    margin: 0;
+    color: #1e1f21;
+    line-height: 1.5;
+    font-size: 1rem !important;
+}
+
+#author-bio .author-social-media a img {
+    width: 24px; /* Adjust the width as needed */
+    height: auto; /* This ensures the aspect ratio is maintained */
+    vertical-align: middle; /* Aligns the icon with the text */
+    margin-right: 15px; /* Adds some space between icons */
+    float: right;
+    transition: transform 0.3s ease; /* Smooth transition for the transform property */
+}
+
+#author-bio .author-social-media a:hover img {
+    transform: rotate(360deg); /* Rotate the icon 360 degrees on hover */
+}
