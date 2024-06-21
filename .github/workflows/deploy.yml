@@ -47,4 +47,5 @@ jobs:
         run: |
           echo "GitHub Ref: ${{ github.ref }}"
           echo "Release Branch Name: ${{ vars.RELEASE_BRANCH_NAME }}"
-          echo "Workflow Run Event: ${{ toJson(github.event.workflow_run) }}"
+          echo "Workflow Run Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Workflow Run Event: ${{ github.event.workflow_run.event }}"
