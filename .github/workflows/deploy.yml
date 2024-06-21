@@ -32,13 +32,19 @@ jobs:
       build_id: ${{ steps.build.outputs.build_id }}
       build_image_name: ${{ steps.build.outputs.build_image_name }}
     steps:
-      - name: Check if branch matches
-        id: branch_check
+      - name: Set Branch Match
         run: |
-          echo "Ref: ${{ github.ref }}"
-          if [[ ${{ github.event.workflow_run.head_branch }} == main ]]; then
+          if [[ $GITHUB_EVENT_NAME == 'workflow_run' ]]; then
+            HEAD_BRANCH=${{ github.event.workflow_run.head_branch }}
+          elif [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
+            HEAD_BRANCH=${GITHUB_REF#refs/heads/}
+          fi
+
+          echo "Head Branch: $HEAD_BRANCH"
+
+          if [[ $HEAD_BRANCH == "main" ]]; then
             echo "BRANCH_MATCH=true" >> $GITHUB_ENV
-          elif [[ ${{ github.event.workflow_run.head_branch }} == ${{ vars.RELEASE_BRANCH_NAME }} ]]; then
+          elif [[ $HEAD_BRANCH == "${{ vars.RELEASE_BRANCH_NAME }}" ]]; then
             echo "BRANCH_MATCH=true" >> $GITHUB_ENV
           else
             echo "BRANCH_MATCH=false" >> $GITHUB_ENV
