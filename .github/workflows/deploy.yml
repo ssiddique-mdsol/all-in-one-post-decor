@@ -36,8 +36,10 @@ jobs:
         run: |
           if [[ $GITHUB_EVENT_NAME == 'workflow_run' ]]; then
             HEAD_BRANCH=${{ github.event.workflow_run.head_branch }}
+            echo "HEAD_BRANCH=${{ github.event.workflow_run.head_branch }}" >> $GITHUB_ENV
           elif [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
             HEAD_BRANCH=${GITHUB_REF#refs/heads/}
+            echo "HEAD_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           fi
 
           echo "Head Branch: $HEAD_BRANCH"
@@ -50,11 +52,19 @@ jobs:
             echo "BRANCH_MATCH=false" >> $GITHUB_ENV
           fi
 
+          # Set STAGE based on the branch name
+          if [[ $HEAD_BRANCH == *"release"* ]]; then
+            echo "STAGE=distro" >> $GITHUB_ENV
+          else
+            echo "STAGE=sandbox" >> $GITHUB_ENV
+          fi
+
       - name: Print Debug Information
         run: |
           echo "GitHub Ref: ${{ github.ref }}"
           echo "Release Branch Name: ${{ vars.RELEASE_BRANCH_NAME }}"
-          echo "Workflow Run Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Workflow Run Branch: $HEAD_BRANCH"
+          echo "STAGE: $STAGE"
           echo "Workflow Run Event: ${{ github.event.workflow_run.event }}"
 
       - name: running build
