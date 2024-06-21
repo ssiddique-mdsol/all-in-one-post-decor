@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   bash_run:
-    runs-on: [self-hosted, ubuntu-latest]
+    runs-on: [ubuntu-latest]
     steps:
       - name: Print success
         id: branch_check
