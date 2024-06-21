@@ -2,10 +2,10 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [main, test]
+    branches: [main, release]
 
   pull_request:
-    branches: [main, test]
+    branches: [main, release]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
