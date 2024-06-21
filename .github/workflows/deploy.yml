@@ -12,7 +12,7 @@ on:
         options: [sandbox, distro]
   workflow_run:
     workflows: ["Continuous Integration"]
-    branches: [main, test]
+    branches: [main, release]
     types: [completed]
 
 concurrency:
