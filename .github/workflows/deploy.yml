@@ -1,0 +1,50 @@
+name: Build, Release and Deploy
+run-name: Build, Release and Deploy ${{ inputs.stage }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        type: choice
+        description: Stage
+        required: false
+        default: sandbox
+        options: [sandbox, distro]
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    branches: [main, test]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  STAGE: ${{ contains(github.ref, 'main') && 'distro' || 'sandbox' }}
+
+jobs:
+  build:
+    runs-on: [self-hosted, ubuntu-latest]
+    if: >
+      (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success')
+    outputs:
+      build_id: ${{ steps.build.outputs.build_id }}
+      build_image_name: ${{ steps.build.outputs.build_image_name }}
+    steps:
+      - name: Check if branch matches
+        id: branch_check
+        run: |
+          echo "Ref: ${{ github.ref }}"
+          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+            echo "BRANCH_MATCH=true" >> $GITHUB_ENV
+          elif [[ ${{ github.ref }} == refs/heads/${{ vars.RELEASE_BRANCH_NAME }} ]]; then
+            echo "BRANCH_MATCH=true" >> $GITHUB_ENV
+          else
+            echo "BRANCH_MATCH=false" >> $GITHUB_ENV
+          fi
+
+      - name: Print Debug Information
+        run: |
+          echo "GitHub Ref: ${{ github.ref }}"
+          echo "Release Branch Name: ${{ vars.RELEASE_BRANCH_NAME }}"
+          echo "Workflow Run Event: ${{ toJson(github.event.workflow_run) }}"
