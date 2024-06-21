@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  STAGE: ${{ contains(github.ref, 'main') && 'distro' || 'sandbox' }}
+  STAGE: ${{ contains(github.event.workflow_run.head_branch, 'release') && 'distro' || 'sandbox' }}
 
 jobs:
   build:
@@ -36,9 +36,9 @@ jobs:
         id: branch_check
         run: |
           echo "Ref: ${{ github.ref }}"
-          if [[ ${{ github.ref }} == refs/heads/develop ]]; then
+          if [[ ${{ github.event.workflow_run.head_branch }} == main ]]; then
             echo "BRANCH_MATCH=true" >> $GITHUB_ENV
-          elif [[ ${{ github.ref }} == refs/heads/${{ vars.RELEASE_BRANCH_NAME }} ]]; then
+          elif [[ ${{ github.event.workflow_run.head_branch }} == ${{ vars.RELEASE_BRANCH_NAME }} ]]; then
             echo "BRANCH_MATCH=true" >> $GITHUB_ENV
           else
             echo "BRANCH_MATCH=false" >> $GITHUB_ENV
@@ -50,3 +50,7 @@ jobs:
           echo "Release Branch Name: ${{ vars.RELEASE_BRANCH_NAME }}"
           echo "Workflow Run Branch: ${{ github.event.workflow_run.head_branch }}"
           echo "Workflow Run Event: ${{ github.event.workflow_run.event }}"
+
+      - name: running build
+        if: ${{ env.BRANCH_MATCH == 'true' }}
+        run: echo "Running Build"
